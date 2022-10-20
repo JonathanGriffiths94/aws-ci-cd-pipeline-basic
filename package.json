@@ -2,7 +2,7 @@
   "name": "aws-ci-cd-pipeline-basic",
   "version": "0.1.0",
   "bin": {
-    "aws-ci-cd-pipeline-basic": "bin/aws-ci-cd-pipeline-basic.js"
+    "cicd-integration-test.ts": "bin/cicd-integration-test.ts"
   },
   "scripts": {
     "build": "tsc",

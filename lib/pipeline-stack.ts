@@ -142,8 +142,7 @@ export class PipelineStack extends Stack {
     const integTestBuildAction = new aws_codepipeline_actions.CodeBuildAction({
       actionName: "IntegTest",
       project: integTestCodeBuildProject,
-      input: sourceOutput,
-        outputs: [cdkBuildOutput]
+      input: sourceOutput
     });
 
     // Cdk build action

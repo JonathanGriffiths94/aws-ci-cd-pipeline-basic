@@ -1,5 +1,5 @@
 {
-  "app": "npx ts-node --prefer-ts-exts bin/aws-ci-cd-pipeline-basic.ts",
+  "app": "npx ts-node --prefer-ts-exts bin/cicd-integration-test.ts",
   "watch": {
     "include": [
       "**"
