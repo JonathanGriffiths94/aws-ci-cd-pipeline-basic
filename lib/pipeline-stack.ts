@@ -147,7 +147,7 @@ export class PipelineStack extends Stack {
     });
 
     // Cdk build action
-    const cdkBuild = new aws_codepipeline_actions({
+    const cdkBuild = new aws_codepipeline_actions.CodeBuildAction({
         actionName: "BuildCfnTemplate",
         project: cdkBuildProject,
         input: sourceOutput,
@@ -174,37 +174,37 @@ export class PipelineStack extends Stack {
     adminPermissions: true
     });
 
-    // Pipeline
-    const pipeline = aws_codepipeline.Pipeline(
-      this,
-      "PipelineDemo", {
-          pipelineName: "PipelineDemo",
-          stages: [
-              {
-                  stageName: "GitHubConnect",
-                  actions: [sourceAction]
-              },
-              {
-                  stageName: "UnitTest",
-                  actions: [unitTestBuildAction]
-              },
-              {
-                  stageName: "BuildTemplate",
-                  actions: [cdkBuild]
-              },
-              {
-                  stageName: "DeployPreProd",
-                  actions: [deployPreProd]
-              },
-              {
-                  stageName: "IntegTest",
-                  actions: [integTestBuildAction]
-              },
-              {
-                  stageName: "DeployProd",
-                  actions: [deployProd]
-              }]
-      });
+      // pipeline
+    const pipeline = new aws_codepipeline.Pipeline(this, "CicdPipelineDemo", {
+      pipelineName: "CicdPipelineDemo",
+      crossAccountKeys: false,
+      stages: [
+        {
+          stageName: "Source",
+          actions: [sourceAction],
+        },
+        {
+          stageName: "Unittest",
+          actions: [unitTestBuildAction],
+        },
+        {
+          stageName: "BuildTemplate",
+          actions: [cdkBuild],
+        },
+        {
+          stageName: "DeployPreProd",
+          actions: [deployPreProd],
+        },
+        {
+          stageName: "IntegTest",
+          actions: [integTestBuildAction],
+        },
+        {
+          stageName: "DeployProd",
+          actions: [deployProd],
+        },
+      ],
+    });
 
     // Remove artifact bucket on stack delete
       pipeline.artifactBucket.applyRemovalPolicy(RemovalPolicy.DESTROY)
