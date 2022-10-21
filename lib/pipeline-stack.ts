@@ -27,7 +27,7 @@ export class PipelineStack extends Stack {
     const sourceAction = new aws_codepipeline_actions.CodeStarConnectionsSourceAction({
       actionName: "GitHub",
       owner: "JonathanGriffiths94",
-      connectionArn: `arn.aws:codestar-connections:${this.region}:${this.account}:connection/${props.codeStarId}`,
+      connectionArn: `arn:aws:codestar-connections:${this.region}:${this.account}:connection/${props.codeStarId}`,
       repo: "aws-cicd-pipeline-basic",
       output: sourceOutput
     });
@@ -55,7 +55,7 @@ export class PipelineStack extends Stack {
         }
     )
 
-    // CodeBuild for integration test
+    // Role for integration test
     const role = new aws_iam.Role(this, "RoleForIntegrationTest", {
       roleName: "RoleForIntegrationTest",
       assumedBy: new aws_iam.ServicePrincipal("codebuild.amazonaws.com")
@@ -73,6 +73,7 @@ export class PipelineStack extends Stack {
         })
     )
 
+      // CodeBuild for integration test
     const integTestCodeBuildProject = new aws_codebuild.PipelineProject(
       this,
       "CodeBuildIntegTest",
@@ -100,6 +101,7 @@ export class PipelineStack extends Stack {
         })
       }
     )
+
     // CodeBuild to build cdk stack
     const cdkBuildProject = new aws_codebuild.PipelineProject(
         this,
@@ -137,6 +139,7 @@ export class PipelineStack extends Stack {
         }
       }
     });
+
 
     // Integration CodeBuild action
     const integTestBuildAction = new aws_codepipeline_actions.CodeBuildAction({
